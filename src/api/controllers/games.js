@@ -41,11 +41,11 @@ const getGameById = async (req, res, next) => {
 };
 
 // Listado de registros Admin
-const getAllGames = async (req, res, next) => {
+const getGamesNotVerified = async (req, res, next) => {
     try {
         
         // Crear variable donde irán los registros
-        const games = await Game.find();
+        const games = await Game.find({ verified: false });
 
         // Devolver el resultado y json con registros
         return res.status(200).json(games);
@@ -53,7 +53,7 @@ const getAllGames = async (req, res, next) => {
     } catch (error) {
         
         // Devolver error 400 e inyectarlo en el json
-        return res.status(400).json("error");
+        return res.status(400).json(error);
 
     }
 };
@@ -134,4 +134,4 @@ const deleteGame = async (req, res, next) => {
     }
 };
 
-module.exports = { getGames, getGameById, postGame, putGame, deleteGame, getAllGames };
+module.exports = { getGames, getGameById, postGame, putGame, deleteGame, getGamesNotVerified };
