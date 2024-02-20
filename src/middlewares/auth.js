@@ -1,21 +1,13 @@
 const User = require("../api/models/users");
 const { verifyJwt } = require("../config/jwt");
+const { validateUser } = require("../utils/validateUser");
 
 // Crear función de autenticación
 const isAuth = async (req, res, next) => {
     try {
         
-        // Crear el token
-        const token = req.headers.authorization;
-
-        // Eliminar "Bearer " del token recibido
-        const parsedToken = token.replace("Bearer ", "");
-
-        // Obtener el id del usuario
-        const { id } = verifyJwt(parsedToken);
-
         // Buscar los datos del usuario
-        const user = await User.findById(id);
+        const user = validateUser(req.headers.authorization);
 
         // Poner la contraseña a null
         user.password = null;
@@ -37,19 +29,12 @@ const isAuth = async (req, res, next) => {
 // Crear función de autenticación para administradores
 const isAdmin = async (req, res, next) => {
     try {
+        // Buscar datos del usuario en BBDD
+        const user = validateUser(req.headers.authorization);
+
+        console.log(user);
         
-        // Crear el token
-        const token = req.headers.authorization;
-
-        // Eliminar "Bearer " del token recibido
-        const parsedToken = token.replace("Bearer ", "");
-
-        // Obtener el id del usuario
-        const { id } = verifyJwt(parsedToken);
-
-        // Buscar los datos del usuario
-        const user = await User.findById(id);
-
+        // Comprobar el rol del usuario
         if(user.rol === "admin"){
             // Poner la contraseña a null
             user.password = null;
