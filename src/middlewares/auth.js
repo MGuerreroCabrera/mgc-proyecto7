@@ -30,9 +30,7 @@ const isAuth = async (req, res, next) => {
 const isAdmin = async (req, res, next) => {
     try {
         // Buscar datos del usuario en BBDD
-        const user = validateUser(req.headers.authorization);
-
-        console.log(user);
+        const user = await validateUser(req.headers.authorization);
         
         // Comprobar el rol del usuario
         if(user.rol === "admin"){
