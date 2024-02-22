@@ -1,6 +1,6 @@
 const User = require("../api/models/users");
 const { verifyJwt } = require("../config/jwt");
-const { validateUser } = require("../utils/validateUser");
+const { validateUser, initUser } = require("../utils/validateUser");
 
 // Crear función de autenticación
 const isAuth = async (req, res, next) => {
@@ -9,11 +9,8 @@ const isAuth = async (req, res, next) => {
         // Buscar los datos del usuario
         const user = validateUser(req.headers.authorization);
 
-        // Poner la contraseña a null
-        user.password = null;
-
-        // Poner el usuario en los datos de la request
-        req.user = user; 
+        // Llamar a la función initUser que incializa los valores de user.password a null y pone el usuario en la request        
+        initUser(req, user);
 
         // Seguimos a lo siguiente que haya que hacer
         next();
@@ -34,12 +31,8 @@ const isAdmin = async (req, res, next) => {
         
         // Comprobar el rol del usuario
         if(user.rol === "admin"){
-            // Poner la contraseña a null
-            user.password = null;
-
-            // Poner el usuario en los datos de la request
-            req.user = user; 
-
+            // llamar a la función initUser que inicializa el valor de pwd a null y pone el usuario en la request
+            initUser(req, user);
             // Seguimos a lo siguiente que haya que hacer
             next();
         }else{

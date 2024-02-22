@@ -16,5 +16,12 @@ const validateUser = async (token) => {
     }
 }
 
+const initUser = (req, user) => {
+    // Inicializar valores de psw a null
+    user.password = null;
+    // Poner el usuario en los datos de la request
+    req.user = user;
+} 
+
 // Exportar función
-module.exports = { validateUser }
+module.exports = { validateUser, initUser }
