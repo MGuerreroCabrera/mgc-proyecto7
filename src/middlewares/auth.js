@@ -1,5 +1,3 @@
-const User = require("../api/models/users");
-const { verifyJwt } = require("../config/jwt");
 const { validateUser, initUser } = require("../utils/validateUser");
 
 // Crear función de autenticación
